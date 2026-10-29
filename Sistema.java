@@ -5,7 +5,7 @@ public class Sistema {
     private ArrayList<Produto> produtos = new ArrayList<>();
     int id = 0;
 
-    protected void cadastrarProduto(Scanner sc){
+    protected void cadastrarProduto(Scanner sc) {
         id++;
         System.out.println("Nome: ");
         String nome = sc.nextLine();
@@ -19,16 +19,16 @@ public class Sistema {
         System.out.println("Digite: ");
         int opcao = sc.nextInt();
         sc.nextLine();
-        if(opcao == 1){
+        if (opcao == 1) {
             this.cadastrarRacao(sc, nome, preco, quantidade);
         } else if (opcao == 2) {
-            //metodo para acessorio
-        }else{
+            this.cadastrarAcessorio(sc, nome, preco, quantidade);
+        } else {
             System.out.println("Opção inválida!");
         }
     }
 
-    private void cadastrarRacao(Scanner sc, String nome, double preco, int quantidade){
+    private void cadastrarRacao(Scanner sc, String nome, double preco, int quantidade) {
         System.out.println("Digite o peso: ");
         double peso = sc.nextDouble();
         System.out.println("Qual o sabor?");
@@ -37,10 +37,10 @@ public class Sistema {
         System.out.println("3.Frango");
         int opcaoSabor = sc.nextInt();
         Sabor sabor = null;
-        switch (opcaoSabor){
+        switch (opcaoSabor) {
             case 1:
-               sabor = Sabor.CARNE;
-               break;
+                sabor = Sabor.CARNE;
+                break;
             case 2:
                 sabor = Sabor.PEIXE;
                 break;
@@ -56,7 +56,7 @@ public class Sistema {
         System.out.println("Cadastrado efetuado!");
     }
 
-    private void cadastrarAcessorio(Scanner sc, String nome, double preco, int quantidade){
+    private void cadastrarAcessorio(Scanner sc, String nome, double preco, int quantidade) {
         System.out.println("Qual a cor do Acessório: ");
         String cor = sc.nextLine();
 
@@ -65,24 +65,52 @@ public class Sistema {
         System.out.println("Cadastro efetuado!");
     }
 
-    public void listarProdutos(){
-        if(this.produtos.isEmpty()){
+    public void listarProdutos() {
+        if (this.produtos.isEmpty()) {
             System.out.println("Não há produtos cadastrados.");
         }
-        for(Produto produto : this.produtos){
+        for (Produto produto : this.produtos) {
             System.out.println(produto);
         }
     }
-    private Produto buscarId(Scanner sc){
+
+    private Produto buscarId(Scanner sc) {
         System.out.println("Qual o id do produto que deseja atualizar: ");
         int opcao = sc.nextInt();
-        for(Produto produto : this.produtos){
-            if(opcao == produto.getId()){
+        for (Produto produto : this.produtos) {
+            if (opcao == produto.getId()) {
                 System.out.println("Produto encontrado");
                 System.out.println(produto);
             }
+            return produto;
+        }
+        return null;
+    }
+
+    private Produto buscarNome(Scanner sc) {
+        System.out.println("Qual nome do produto: ");
+        String nomeProduto = sc.nextLine();
+        for (Produto produto : this.produtos) {
+            if (produto.equals(nomeProduto)) {
+                System.out.println("Produto encontrado!");
+                System.out.println(produto);
                 return produto;
             }
+        }
+        return null;
+    }
+
+    public Produto buscar(Scanner sc){
+        System.out.println("Deseja bucar por: \n1- Id \n2- Nome ");
+        int opcao = sc.nextInt();
+        switch (opcao){
+            case 1:
+                buscarId(sc);
+                break;
+            case 2:
+                buscarNome(sc);
+                break;
+        }
         return null;
     }
 
@@ -101,20 +129,27 @@ public class Sistema {
     }
 
     public void atualizarProduto(Scanner sc){
-
         System.out.println("Informe o que deseja atualizar: \n1- Nome \n2- preço");
         int opcaoAtualizar = sc.nextInt();
         switch (opcaoAtualizar){
             case 1:
-                //metodo atualizar nome
+                atualizarNome(sc);
                 break;
             case 2:
-                //metodo atualizar preco
+                atualizarPreco(sc);
                 break;
         }
+    }
+
+    public void removerProduto(Scanner sc){
+        System.out.println("---REMOVER PRODUTO---");
+        Produto produto = buscar(sc);
+        this.produtos.remove(produto);
+        System.out.println("Produto Removido");
+
 
     }
 }
 
 
-}
+
